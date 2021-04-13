@@ -1,0 +1,10 @@
+@import "base.css";
+
+#statisticsPanel {
+	position: static;
+}
+
+#statisticsTitle {
+  letter-spacing: 10px;
+}
+}

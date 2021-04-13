@@ -1,0 +1,184 @@
+/* Balázs */
+body{
+	font-family: Arial, sans-serif;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	padding-top: 100px;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+header *, body{
+	margin: 0;
+}
+header, footer{
+	background-color: #2b73b3;
+}
+header{
+	width: 100vw;
+	height: 75px;
+	display: flex;
+	padding: 0 60px;
+	box-sizing: border-box;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 3;
+}
+#logo{
+	height: 80%;
+	margin: auto 20px;
+	animation: spin 3s cubic-bezier(.65,.40,.40,.65) alternate infinite;
+	float: left;
+	position: static;
+}
+@keyframes spin {
+	from{
+		transform: rotate(-45deg);
+	}
+	to{
+		transform: rotate(45deg);
+	}
+}
+nav ul{
+	list-style: none;
+	display: flex;
+	box-sizing: border-box;
+	/*text-align: center;*/
+	padding-left: 5%;
+	height: 100%;
+}
+
+nav li{
+	width: 150px;
+}
+
+nav a{
+	text-decoration: none;
+	color: #f2f8fa;
+	line-height: 75px;
+	padding: 0 20px;
+	position: relative;
+}
+nav div{
+	height: 100%;
+	/*display: inline-block;*/
+	transition: ease 0.5s;
+	text-align: center;
+}
+nav div:hover{
+	background-color: #3e59a3;
+}
+nav div.selected{
+	background-color: #3e59a3;
+}
+footer{
+	height: 100px;
+	color: #f2f8fa;
+	display: flex;
+	border: 10px solid transparent;
+	padding: 15px;
+	margin-top: auto;
+	border-image: url("../img/border.png") 30 round;
+}
+footer > .f1, footer > .f2, footer > .f3{
+	margin: auto;
+	text-align: center;
+}
+footer .f2 img{
+	height: 20px;
+}
+footer figure{
+	margin: 0;
+}
+q, blockquote{
+	font-style: italic;
+}
+/* Pityó */
+.primaryButton, .normalButton {
+	height: 35px;
+	width: 140px;
+	border: solid;
+	border-radius: 5px;
+}
+
+.primaryButton {
+	background-color: #2b73b3;
+	color: #ffffff;
+	border-color: #2068a8;
+}
+
+.primaryButton:hover {
+	background-color: #1b5080;
+	color: #eeeeee;
+}
+
+.normalButton {
+	background-color: #dfe6f2;
+	color: #000000;
+	border-color: #c3cad6;
+}
+
+.normalButton:hover {
+	background-color: #c3cad6;
+	color: #000000;
+}
+
+.inputField {
+	width: 97%;
+	height: 40px;
+	margin: auto;
+	border-radius: 5px;
+	border-color: #dddddd;
+	font-family: Arial, sans-serif;
+	font-weight: bold;
+	font-size: 30px;
+}
+
+.inputField:hover {
+	background-color: #eeeeee;
+}
+
+.mainTitle {
+    text-align: center;
+}
+
+.text {
+	font-family: Arial, sans-serif;
+	font-weight: bold;
+}
+
+.centerPanel {
+	border-style: solid; 
+	border-color: #d3ebf2;
+	border-radius: 10px;
+	background-color: #f2f8fa;
+
+	/*creates space around contents*/
+	padding: 10px;
+	/*creates space around elements*/
+	margin: auto;
+	margin-top: 2%;
+	margin-bottom: 2%;
+	width: 500px;
+	white-space: normal;
+}
+
+.dataTable {
+	width: 100%;
+	color: white;
+}
+
+
+.dataTable th, .dataTable td {
+	border: 1px black solid;
+}
+
+.dataTable th {
+	background-color: #073652;
+}
+
+.dataTable td {
+	background-color: #06649c;
+}
+

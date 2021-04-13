@@ -1,0 +1,45 @@
+.newCar-sidebar{
+    height: 60px;
+    width: 140px;
+    position: fixed;
+    top: 50%;
+    background-color: #2068a8;
+    text-align: center;
+}
+.newCar-sidebar > a{
+    text-decoration: none;
+    color: #f2f8fa;
+    line-height: 60px;
+    padding: 0 5px;
+    font-size: 13px;
+}
+.card{
+    position: relative;
+}
+.info{
+    z-index: 0;
+}
+.edit, .delete{
+    box-sizing: border-box;
+    border: 3px solid white;
+    position: absolute;
+    width: 85px;
+    height: 40px;
+    bottom: 0;
+    text-align: center;
+    z-index: 1;
+}
+.edit a, .delete a{
+    color: #f2f8fa;
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 34px;
+}
+.edit{
+    background-color: green;
+    right: 85px;
+}
+.delete{
+    background-color: red;
+    right: 0;
+}

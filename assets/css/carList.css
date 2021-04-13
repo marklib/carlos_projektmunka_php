@@ -1,0 +1,75 @@
+.cars{
+    display: grid;
+    grid-template-columns: 420px 420px;
+    grid-template-rows: 250px 250px;
+    column-gap: 20px;
+    row-gap: 20px;
+    margin: 100px auto;
+    width: 860px;
+} .cars img{
+    height: 250px;
+    width: 250px;
+}
+.cars .card{
+    display: flex;
+    box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.69);
+    border-radius: 5px;
+    background-color: #2068a8;
+}
+.one{
+    grid-column: 1/2;
+    grid-row: 1/2;
+}
+.two{
+    grid-column: 2/3;
+    grid-row: 1/2;
+}
+.three{
+    grid-column: 1/2;
+    grid-row: 2/3;
+}
+.four{
+    grid-column: 2/3;
+    grid-row: 2/3;
+}
+.five{
+    grid-column: 1/2;
+    grid-row: 3/4;
+}
+.six{
+    grid-column: 2/3;
+    grid-row: 3/4;
+}
+.cars .info{
+    margin: auto 20px;
+    text-align: left;
+    color: #f2f8fa;
+    font-size: 15px;
+}
+.cars .info, .cars .type{
+    text-shadow: 2px 2px black;
+}
+.cars .info span::first-line{
+    font-weight: bold;
+}
+.cars ul{
+    list-style: none;
+    padding: 0;
+}
+.cars .info span{
+    margin-right: 7px;
+}
+.cars ul li:nth-child(4){
+    padding-top: 10px;
+}
+.cars td{
+    width: 410px;
+}
+.cars .type{
+    margin-bottom: 7px;
+    font-size: 18px;
+}
+hr{
+    border: 0;
+    border-top: 2px solid black;
+}

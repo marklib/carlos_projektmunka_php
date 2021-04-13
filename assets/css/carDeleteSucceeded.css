@@ -1,0 +1,8 @@
+@import "base.css";
+
+#backToCarListButton {
+	font-size: 100%;
+	margin-top:4%;
+	margin-left: 35%;
+	height: 110%
+}

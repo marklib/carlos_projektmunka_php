@@ -1,0 +1,7 @@
+@import "base.css";
+
+#cancelButton, #saveButton {
+	font-size: 100%;
+	margin-top:4%;
+	margin-left: 35%;
+}
