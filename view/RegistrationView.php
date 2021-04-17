@@ -1,15 +1,15 @@
 <?php
 require_once 'SiteBuilder.php';
 
-class UserView extends SiteBuilder
+class RegistrationView extends SiteBuilder
 {
     public function __construct($title)
     {
         parent::__construct($title);
     }
 
-    function loadLoginPanel() {
-        include 'loginPanel.php';
+    function loadRegistrationPanel() {
+        include 'templates/registrationPanelTemplate.php';
     }
 
     public function __destruct()

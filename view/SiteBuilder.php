@@ -1,5 +1,5 @@
 <?php
-require_once 'constants/UrlUtil.php';
+require_once 'util/UrlUtil.php';
 require_once 'service/UserService.php';
 
 class SiteBuilder
@@ -9,30 +9,44 @@ class SiteBuilder
             <html>
                 <head>
                     <title>' . $title . '</title>
+		            <link rel="stylesheet" type="text/css"  href="assets/css/login.css"/>
                 </head>
             <body>
-            <h3>Logged in user: ' . UserService::getLoggedInUser() . '</h3>
-        <nav>
-		        <ul>
-		            <li><div><a href="carListLoggedIn.html">Autólista</a></div></li>
-		            <li><div class="selected"><a href="ownedCars.html">Saját autók</a></div></li>
-		            <li><div><a href="' . UrlUtil::getRoutedUrl(UrlUtil::NAV_LOGOUT) . '">Kijelentkezés</a></div></li>
-		            <li><div><a href="userSettings.html">Beállítások</a></div></li>
-					<li><div><a href="statistics.html">Statisztika</a></div></li>
-		        </ul>
-		    </nav>';
+            <h3>Logged in user: ' . UserService::getLoggedInUser() . '</h3>';
+
+        if (UserService::isUserLoggedIn()) {
+            $this->buildLoggedInMenu();
+        } else {
+            $this->buildLoggedOutMenu();
+        }
     }
 
-    function buildButton($name) {
-        echo "<button>" . $name . "</button>";
+    function buildLoggedInMenu() {
+        echo '<header>
+                <img src="assets/img/logo.png" alt="logo" id="logo">
+                <nav>
+                    <ul>
+                        <li><div><a href="carListLoggedIn.html">Autólista</a></div></li>
+                        <li><div class="selected"><a href="ownedCars.html">Saját autók</a></div></li>
+                        <li><div><a href="' . UrlUtil::getRoutedUrl(UrlUtil::NAV_LOGOUT) . '">Kijelentkezés</a></div></li>
+                        <li><div><a href="userSettings.html">Beállítások</a></div></li>
+                        <li><div><a href="statistics.html">Statisztika</a></div></li>
+                    </ul>
+                </nav>
+            </header>';
     }
 
-    function buildParagraph($value) {
-        echo "<p>" . $value . "</p>";
-    }
-
-    function buildHeader1($value) {
-        echo "<h1>" . $value . "</h1>";
+    function buildLoggedOutMenu() {
+        echo '<header>
+                <img src="assets/img/logo.png" alt="logo" id="logo">
+                <nav>
+                    <ul>
+                        <li><div><a href="index.html">Autólista</a></div></li>
+                        <li><div class="selected"><a href="' . UrlUtil::getRoutedUrl(UrlUtil::NAV_LOGIN) . '">Bejelentkezés</a></div></li>
+                        <li><div><a href="' . UrlUtil::getRoutedUrl(UrlUtil::NAV_REGISTRATION) . '">Regisztráció</a></div></li>
+                    </ul>
+                </nav>
+            </header>';
     }
 
     public function __destruct() {

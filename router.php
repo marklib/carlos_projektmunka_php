@@ -1,6 +1,6 @@
 <?php
 require_once 'controller/UserController.php';
-require_once 'constants/UrlUtil.php';
+require_once 'util/UrlUtil.php';
 
 class Router
 {
@@ -25,6 +25,9 @@ class Router
             case UrlUtil::NAV_LOGOUT:
                 UserController::logout();
                 break;
+            case UrlUtil::NAV_REGISTRATION:
+                UserController::initRegistration();
+                break;
             default:
                 print('404');
         }
@@ -37,6 +40,9 @@ class Router
             switch ($operation) {
                 case UrlUtil::OPERATION_LOGIN:
                     UserController::login();
+                    break;
+                case UrlUtil::OPERATION_REGISTER:
+                    UserController::register();
                     break;
             }
         }

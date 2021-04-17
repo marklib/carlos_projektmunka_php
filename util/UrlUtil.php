@@ -7,10 +7,12 @@ class UrlUtil
     #POST operations
     const OPERATION_LOGIN = 'login';
     const OPERATION_LOGOUT = 'logout';
+    const OPERATION_REGISTER = 'register';
 
     #GET navigations
     const NAV_LOGIN = 'login';
     const NAV_LOGOUT = 'logout';
+    const NAV_REGISTRATION = 'registration';
 
     static function getRoutedUrl($param) {
         return self::MAIN_URL . '?nav=' . $param;
