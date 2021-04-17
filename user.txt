@@ -1,0 +1,1 @@
+1;pelda@example.com;admin;Példa József;+36701234567;

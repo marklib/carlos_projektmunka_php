@@ -7,9 +7,11 @@ class UserService
 {
     static function login() {
         if (!isset($_SESSION['user'])) {
-            $email = $_POST['emailInput'];
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+
             $user = self::findUserByEmail($email);
-            if (isset($user)) {
+            if (isset($user) && $user->getPassword() === $password) {
                 $_SESSION['user'] = $user;
             } else {
                 //TODO hibakezelés
@@ -30,6 +32,18 @@ class UserService
         return null;
     }
 
+    static function findUserById($id) {
+        $users = self::findAllUser();
+
+        foreach($users as $user) {
+            if ($user->getId() === $id) {
+                return $user;
+            }
+        }
+
+        return null;
+    }
+
     private static function findAllUser() {
         $connector = new DBConnector();
         $userTable = "user";
@@ -41,7 +55,6 @@ class UserService
         }
 
         return $users;
-
     }
 
     private static function createUserByRecord($record) {
@@ -66,6 +79,8 @@ class UserService
         $user->setFullName($_POST['fullName']);
         $user->setPhoneNumber($_POST['phoneNumber']);
         self::saveNewUser($user);
+
+        UrlUtil::redirectToUrl(UrlUtil::NAV_LOGIN);
     }
 
     private static function checkRegistration() {
@@ -95,7 +110,7 @@ class UserService
             $message .= "Telefonszám nincs megadva!";
             $failed = true;
         }
-        //TODO hiba kiíratás
+
     }
 
     private static function saveNewUser($user) {

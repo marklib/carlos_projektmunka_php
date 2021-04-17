@@ -3,10 +3,10 @@
         <h2 class="mainTitle text">Bejelentkezés</h2>
 
         <label for="emailInput" class="text">Email cím</label>
-        <input required id="emailInput" name="emailInput" class="inputField" type="text"/><br/>
+        <input required id="emailInput" name="email" class="inputField" type="text"/><br/>
 
         <label for="passwordInput" class="text">Jelszó</label>
-        <input required id="passwordInput" class="inputField" type="password"/><br/>
+        <input required id="passwordInput" name="password" class="inputField" type="password"/><br/>
 
         <input type="hidden" name="operation" value="login"/>
 

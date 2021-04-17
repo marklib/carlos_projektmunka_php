@@ -12,7 +12,7 @@ class DBConnector {
         $myfile = fopen($table . ".txt", "a");
         $dataTxt = "";
         foreach($params as $paramKey => $paramValue) {
-            $dataTxt .= $paramKey . "::" . $paramValue . ";";
+            $dataTxt .= $paramValue . ";";
         }
         $dataTxt .= "\n";
         fwrite($myfile, $dataTxt);
@@ -21,9 +21,13 @@ class DBConnector {
 
     public function getLastId($table) {
         $records = $this->getRecordsTable($table);
-        $lastRecord = $records[count($records) - 1];
-        $lastIndex = $lastRecord[0];
-        return $lastIndex;
+        if (isset($records) && count($records) != 0) {
+            $lastRecord = $records[count($records) - 1];
+            $lastIndex = $lastRecord[0];
+            return $lastIndex;
+        } else {
+            return 0;
+        }
     }
 
     public function getRecordsTable($table) {
