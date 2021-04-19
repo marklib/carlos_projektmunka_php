@@ -10,13 +10,41 @@ class DBConnector {
 
     public function insert($table, $params) {
         $myfile = fopen($table . ".txt", "a");
-        $dataTxt = "";
-        foreach($params as $paramKey => $paramValue) {
-            $dataTxt .= $paramValue . ";";
-        }
-        $dataTxt .= "\n";
+        $dataTxt = serialize($params);
+//        foreach($params as $paramValue) {
+//            $dataTxt .= serialize($paramValue) . ";";
+//        }
+//        if (0 < strlen($dataTxt)) {
+//            if (substr($dataTxt, -1) === ";") {
+//                $dataTxt = substr($dataTxt, 0, -1);
+//            }
+//            if (substr($dataTxt, -1) !== "\n") {
+                $dataTxt .= "\n";
+//            }
+//        }
         fwrite($myfile, $dataTxt);
         fclose($myfile);
+    }
+
+    public function updateById($table, $id, $params) {
+        $originalRecords = $this->getRecordsTable($table);
+        $newRecords = array();
+        foreach ($originalRecords as $originalRecord) {
+            if ($id === $originalRecord[0]) {
+                $newRecords[] = $params;
+            } else {
+                $newRecords[] = $originalRecord;
+            }
+        }
+
+        foreach ($newRecords as $newRecord) {
+            $this->insert($table . 'temp', $newRecord);
+        }
+        if (file_exists($table . 'temp.txt')) {
+            unlink($table . '.txt');
+            rename($table . 'temp.txt', $table . '.txt');
+        }
+
     }
 
     public function getLastId($table) {
@@ -35,7 +63,12 @@ class DBConnector {
         $handle = fopen($table . ".txt", "r");
         if ($handle) {
             while (($line = fgets($handle)) !== false) {
-                $fields = explode(";", $line);
+//                $fields = explode(";", $line);
+                $fields = unserialize($line);
+//                $unserializedFields = array();
+//                foreach ($fields as $field) {
+//                    $unserializedFields[] = unserialize($field);
+//                }
                 $records[] = $fields;
             }
         }

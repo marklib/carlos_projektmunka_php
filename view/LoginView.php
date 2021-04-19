@@ -1,11 +1,12 @@
 <?php
 require_once 'SiteBuilder.php';
+require_once 'util/DBConnector.php';
 
 class LoginView extends SiteBuilder
 {
-    public function __construct($title)
+    public function __construct()
     {
-        parent::__construct($title);
+        parent::__construct('Bejelentkezés', 'login.css');
     }
 
     function loadLoginPanel() {

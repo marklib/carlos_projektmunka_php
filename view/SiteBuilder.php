@@ -4,34 +4,31 @@ require_once 'service/UserService.php';
 
 class SiteBuilder
 {
-    public function __construct($title) {
+    public function __construct($title, $cssFileName) {
         echo '<!DOCTYPE html>
             <html>
                 <head>
                     <title>' . $title . '</title>
-		            <link rel="stylesheet" type="text/css"  href="assets/css/login.css"/>
+		            <link rel="stylesheet" type="text/css"  href="assets/css/' . $cssFileName . '"/>
                 </head>
-            <body>
-            <h3>Logged in user: ' . UserService::getLoggedInUser() . '</h3>';
+            <body>';
 
         if (UserService::isUserLoggedIn()) {
             $this->buildLoggedInMenu();
         } else {
             $this->buildLoggedOutMenu();
         }
+        $this->buildAlert();
     }
 
     function buildLoggedInMenu() {
         echo '<header>
                 <img src="assets/img/logo.png" alt="logo" id="logo">
                 <nav>
-                    <ul>
-                        <li><div><a href="carListLoggedIn.html">Autólista</a></div></li>
-                        <li><div class="selected"><a href="ownedCars.html">Saját autók</a></div></li>
-                        <li><div><a href="' . UrlUtil::getRoutedUrl(UrlUtil::NAV_LOGOUT) . '">Kijelentkezés</a></div></li>
-                        <li><div><a href="userSettings.html">Beállítások</a></div></li>
-                        <li><div><a href="statistics.html">Statisztika</a></div></li>
-                    </ul>
+                    <ul>';
+        $this->buildMenuButton(UrlUtil::NAV_USER_SETTINGS, 'Beállítások');
+        $this->buildMenuButton(UrlUtil::NAV_LOGOUT, 'Kijelentkezés');
+        echo '</ul>
                 </nav>
             </header>';
     }
@@ -40,13 +37,36 @@ class SiteBuilder
         echo '<header>
                 <img src="assets/img/logo.png" alt="logo" id="logo">
                 <nav>
-                    <ul>
-                        <li><div><a href="index.html">Autólista</a></div></li>
-                        <li><div class="selected"><a href="' . UrlUtil::getRoutedUrl(UrlUtil::NAV_LOGIN) . '">Bejelentkezés</a></div></li>
-                        <li><div><a href="' . UrlUtil::getRoutedUrl(UrlUtil::NAV_REGISTRATION) . '">Regisztráció</a></div></li>
-                    </ul>
+                    <ul>';
+                    $this->buildMenuButton(UrlUtil::NAV_LOGIN, 'Bejelentkezés');
+                    $this->buildMenuButton(UrlUtil::NAV_REGISTRATION, 'Regisztráció');
+        echo '</ul>
                 </nav>
             </header>';
+    }
+
+    function buildMenuButton($navParam, $title) {
+        echo '<li><div ' . $this->buildSelectedClassForMenu($navParam) . ' ><a href="' . UrlUtil::getRoutedUrl($navParam) . '">' . $title . '</a></div></li>';
+    }
+
+    function buildSelectedClassForMenu($navParam) {
+        if (UrlUtil::urlEquals($navParam)) {
+            return 'class="selected"';
+        } else {
+            return null;
+        }
+    }
+
+    public function buildAlert() {
+        if (isset($_SESSION['alertColor']) && isset($_SESSION['alertText'])) {
+            $color = $_SESSION['alertColor'];
+            $text = $_SESSION['alertText'];
+            echo '<div id="alert" style="background-color: ' . $color . '">
+                    <h3><center>' . $text . '</center></h3>
+                </div>';
+            $_SESSION['alertColor'] = null;
+            $_SESSION['alertText'] = null;
+        }
     }
 
     public function __destruct() {

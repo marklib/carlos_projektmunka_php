@@ -2,20 +2,20 @@
 require_once 'SiteBuilder.php';
 require_once 'model/User.php';
 
-class RegistrationView extends SiteBuilder {
+class UserSettingsView extends SiteBuilder {
     private $user = null;
 
     public function __construct() {
-        parent::__construct('Regisztráció', 'registration.css');
+        parent::__construct('Felhasználói beállítások', 'userSettings.css');
     }
 
-    function loadRegistrationPanel($user) {
+    function loadUserSettingsPanel($user) {
         if (isset($user)) {
             $this->user = $user;
         } else {
             $this->user = new User();
         }
-        $type = 'registration';
+        $type = 'userSettings';
         include 'templates/userPanelTemplate.php';
     }
 

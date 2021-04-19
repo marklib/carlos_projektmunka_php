@@ -2,6 +2,8 @@
 require_once 'util/UrlUtil.php';
 require_once 'model/User.php';
 require_once 'util/DBConnector.php';
+require_once 'util/AlertUtil.php';
+require_once 'util/MailUtil.php';
 
 class UserService
 {
@@ -11,13 +13,15 @@ class UserService
             $password = $_POST['password'];
 
             $user = self::findUserByEmail($email);
-            if (isset($user) && $user->getPassword() === $password) {
+            if ($user != null && $user->getPassword() === $password) {
                 $_SESSION['user'] = $user;
+                AlertUtil::showSuccessAlert("Sikeres bejelentkezés!");
+                UrlUtil::redirectHome();
             } else {
-                //TODO hibakezelés
+                AlertUtil::showFailedAlert("Hibás felhasználónév vagy email cím!");
+                UrlUtil::redirectToUrl(UrlUtil::NAV_LOGIN);
             }
         }
-        UrlUtil::redirectHome();
     }
 
     static function findUserByEmail($email) {
@@ -67,50 +71,124 @@ class UserService
         return $user;
     }
 
+    static function sendForgottenPasswordEmail() {
+        if (isset($_POST['email'])) {
+            $email = $_POST['email'];
+            $user = self::findUserByEmail($email);
+            if ($user != null) {
+                $message = "Tisztelt Felhasználó!\n\nA(z) " . $email . " email címhez tartozó jelszó a következő: " . $user->getPassword() . "\n\nÜdvözlettel, A Carlos csapata!";
+                MailUtil::sendEmail($email, 'Elfelejtett jelszó', $message);
+            }
+        }
+        AlertUtil::showSuccessAlert("Kiküldtük a jelszó emlékeztetőt! Perceken belül megtekinthetőnek kell lennie, amennyiben tartozik az email címhez felhasználói fiók!");
+        UrlUtil::redirectHome();
+    }
+
+    static function updateUser() {
+        $user = self::findUserById($_SESSION['user']->getId());
+        $user->setEmail($_POST['email']);
+        if (isset($_POST['password']) && !empty($_POST['password'])) {
+            $user->setPassword($_POST['password']);
+        } else {
+            $user->setPassword($user->getPassword());
+        }
+        $user->setFullName($_POST['fullName']);
+        $user->setPhoneNumber($_POST['phoneNumber']);
+        if (self::checkUserForm()) {
+            self::modifyUser($user);
+            $_SESSION['userForm'] = null;
+            $_SESSION['user'] = $user;
+            AlertUtil::showSuccessAlert("Sikeres módosítás!");
+            UrlUtil::redirectHome();
+        } else {
+            $_SESSION['userForm'] = $user;
+            UrlUtil::redirectToUrl(UrlUtil::NAV_USER_SETTINGS);
+        }
+    }
+
     static function registerUser() {
         $userTable = "user";
         $connector = new DBConnector();
 
-        self::checkRegistration();
         $user = new User();
-        $user->setId($connector->getLastId($userTable) + 1);
         $user->setEmail($_POST['email']);
         $user->setPassword($_POST['password']);
         $user->setFullName($_POST['fullName']);
         $user->setPhoneNumber($_POST['phoneNumber']);
-        self::saveNewUser($user);
+        if (self::checkUserForm()) {
+            $user->setId($connector->getLastId($userTable) + 1);
+            self::saveNewUser($user);
 
-        UrlUtil::redirectToUrl(UrlUtil::NAV_LOGIN);
+            $_SESSION['userForm'] = null;
+            AlertUtil::showSuccessAlert("Sikeres regisztráció!");
+            UrlUtil::redirectToUrl(UrlUtil::NAV_LOGIN);
+        } else {
+            $_SESSION['userForm'] = $user;
+            UrlUtil::redirectToUrl(UrlUtil::NAV_REGISTRATION);
+        }
     }
 
-    private static function checkRegistration() {
-        $message = "";
+    private static function checkUserForm() {
         $failed = false;
-        if (!isset($_POST['email'])) {
-            $message .= "Email cím nincs megadva!";
-            $failed = true;
-        }
-        if (!isset($_POST['password'])) {
-            $message .= "Jelszó nincs megadva!";
-            $failed = true;
-        }
-        if (!isset($_POST['passwordAgain'])) {
-            $message .= "Csak egyszer került a jelszó megadásra!";
-            $failed = true;
-        }
-        if (isset($_POST['password']) !== isset($_POST['passwordAgain'])) {
-            $message .= "A jelszavak nem egyeznek!";
+        if (!isset($_POST['phoneNumber'])) {
+            AlertUtil::showFailedAlert("Telefonszám nincs megadva!");
             $failed = true;
         }
         if (!isset($_POST['fullName'])) {
-            $message .= "Teljes név nincs megadva!";
+            AlertUtil::showFailedAlert("Teljes név nincs megadva!");
             $failed = true;
         }
-        if (!isset($_POST['phoneNumber'])) {
-            $message .= "Telefonszám nincs megadva!";
+        if ($_POST['password'] !== $_POST['passwordAgain']) {
+            AlertUtil::showFailedAlert("A jelszavak nem egyeznek!");
             $failed = true;
         }
+        if (!preg_match("#[a-zA-Z]+#", $_POST['password'])) {
+            AlertUtil::showFailedAlert("A jelszónak legalább egy betűt kell tartalmaznia!");
+            $failed = true;
+        }
+        if (!preg_match("#[0-9]+#", $_POST['password'])) {
+            AlertUtil::showFailedAlert("A jelszónak legalább egy számot kell tartalmaznia!");
+            $failed = true;
+        }
+        if (strlen($_POST['password']) < 8) {
+            AlertUtil::showFailedAlert("A jelszónak legalább 8 karakteresnek kell lennie!");
+            $failed = true;
+        }
+        if (!isset($_POST['passwordAgain'])) {
+            AlertUtil::showFailedAlert("Csak egyszer került a jelszó megadásra!");
+            $failed = true;
+        }
+        if (!isset($_POST['password'])) {
+            AlertUtil::showFailedAlert("Jelszó nincs megadva!");
+            $failed = true;
+        }
+        if (self::findUserByEmail($_POST['email']) != null) {
+            AlertUtil::showFailedAlert("Ez az e-mail cím már foglalt!");
+            $failed = true;
+        }
+        if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+            AlertUtil::showFailedAlert("Érvénytelen e-mail cím!");
+            $failed = true;
+        }
+        if (!isset($_POST['email'])) {
+            AlertUtil::showFailedAlert("Email cím nincs megadva!");
+            $failed = true;
+        }
+        return !$failed;
+    }
 
+    private static function modifyUser($user) {
+        $userTable = 'user';
+        $connector = new DBConnector();
+
+        $params = array(
+            $user->getId(),
+            $user->getEmail(),
+            $user->getPassword(),
+            $user->getFullName(),
+            $user->getPhoneNumber()
+        );
+        $connector->updateById($userTable, $user->getId(), $params);
     }
 
     private static function saveNewUser($user) {
@@ -118,11 +196,11 @@ class UserService
         $connector = new DBConnector();
 
         $params = array(
-            "id" => $user->getId(),
-            "email" => $user->getEmail(),
-            "password" => $user->getPassword(),
-            "fullName" => $user->getFullName(),
-            "phoneNumber" => $user->getPhoneNumber()
+            $user->getId(),
+            $user->getEmail(),
+            $user->getPassword(),
+            $user->getFullName(),
+            $user->getPhoneNumber()
         );
         $connector->insert($userTable, $params);
     }
@@ -136,9 +214,9 @@ class UserService
 
     static function getLoggedInUser() {
         if (self::isUserLoggedIn()) {
-            return $_SESSION['user']->getEmail();
+            return $_SESSION['user'];
         } else {
-            return "Nobody";
+            return null;
         }
     }
 

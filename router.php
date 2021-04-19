@@ -15,21 +15,28 @@ class Router
     private static function handleGet() {
         if (isset($_GET['nav'])) {
             $nav = $_GET['nav'];
+            switch ($nav) {
+                case UrlUtil::NAV_LOGIN:
+                    UserController::initLogin();
+                    break;
+                case UrlUtil::NAV_LOGOUT:
+                    UserController::logout();
+                    break;
+                case UrlUtil::NAV_REGISTRATION:
+                    UserController::initRegistration();
+                    break;
+                case UrlUtil::NAV_USER_SETTINGS:
+                    UserController::initUserSettings();
+                    break;
+                case UrlUtil::NAV_FORGOTTEN_PASSWORD:
+                    UserController::initForgottenPassword();
+                    break;
+                default:
+                    print('404');
+            }
         } else {
-            $nav = 'login';
-        }
-        switch ($nav) {
-            case UrlUtil::NAV_LOGIN:
-                UserController::initLogin();
-                break;
-            case UrlUtil::NAV_LOGOUT:
-                UserController::logout();
-                break;
-            case UrlUtil::NAV_REGISTRATION:
-                UserController::initRegistration();
-                break;
-            default:
-                print('404');
+            echo 'Autó listácska';
+            return;
         }
     }
 
@@ -43,6 +50,12 @@ class Router
                     break;
                 case UrlUtil::OPERATION_REGISTER:
                     UserController::register();
+                    break;
+                case UrlUtil::OPERATION_USER_SETTINGS_SAVE:
+                    UserController::updateUser();
+                    break;
+                case UrlUtil::OPERATION_FORGOTTEN_PASSWORD:
+                    UserController::sendForgottenPasswordEmail();
                     break;
             }
         }

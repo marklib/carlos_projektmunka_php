@@ -1,1 +1,2 @@
-1;pelda@example.com;admin;Példa József;+36701234567;
+a:5:{i:0;i:1;i:1;s:15:"admin@carlos.hu";i:2;s:8:"Admin123";i:3;s:13:"Admin József";i:4;s:15:"+36-60-514-4516";}
+a:5:{i:0;i:2;i:1;s:17:"pelda@example.com";i:2;s:8:"Admin123";i:3;s:14:"Példa József";i:4;s:12:"+36701234564";}
