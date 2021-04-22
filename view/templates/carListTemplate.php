@@ -9,6 +9,11 @@
             if($type == 'myCars'){
                 $phone = UserService::getLoggedInUser()->getPhoneNumber();
                 $id = UserService::getLoggedInUser()->getId();
+
+                //echo '<div class="newCar-sidebar">
+                //            <a href="newCar.html">Autó hozzáadása</a>
+                //    </div>';
+
                 foreach ($cars as $car){
                     if($car->getUserId() == $id){
                         echo '<div class="card" style="grid-row: '.$row.'/'.($row+1).'; grid-column: '.$col.'/'.($col+1).';">
@@ -21,6 +26,8 @@
                             <li><span>Telefon:</span><br><i>'.$phone.'</i></li>
                         </ul>
                 </div>
+                <div class="edit"><a href="'.UrlUtil::getRoutedUrl(UrlUtil::NAV_CAR_MODIFY).'&carId='.$car->getCarId().'">Módosítás</a></div>
+                <div class="delete"><a href="#">Töröl</a></div>
                 </div>';
                         if($col == 1) {
                             $col=2;

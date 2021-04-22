@@ -25,23 +25,6 @@ class CarService{
         $connector->insert($carTable, $params);
     }
 
-    private static function modifyCar($car) {
-        $carTable = 'cars';
-        $connector = new DBConnector();
-
-        $params = array(
-            $car->getCarId(),
-            $car->getUserId(),
-            $car->getName(),
-            $car->getBrand(),
-            $car->getFuelType(),
-            $car->getCondition(),
-            $car->getRentFrom(),
-            //$car->getPicture()
-        );
-        $connector->updateById($carTable, $car->getId(), $params);
-    }
-
     static function findAllCars() {
         $connector = new DBConnector();
         $carTable = "cars";
@@ -123,4 +106,47 @@ class CarService{
     static function findPhoneNumber($car){
         return UserService::findUserById($car->getUserId())->getPhoneNumber();
     }
+
+    static function carModify(){
+        $carTable = "cars";
+        $connector = new DBConnector();
+        $cars = self::findAllCars();
+        $car = new Car();
+
+        foreach ($cars as $car){
+            if($car->getCarId() == $_POST['carId']){
+                $oldCar = $car;
+                break;
+            }
+        }
+        if(isset($_POST['name']) && $_POST['name'] != ''){
+            $car->setName($_POST['name']);
+        }
+        if(isset($_POST['brand']) && $_POST['brand'] != ''){
+            $car->setBrand($_POST['brand']);
+        }
+        if(isset($_POST['fuelType'])){
+            $car->setFuelType($_POST['fuelType']);
+        }
+        if(isset($_POST['condition'])){
+            $car->setCondition($_POST['condition']);
+        }
+        if(isset($_POST['rentFrom'])){
+            $car->setRentFrom($_POST['rentFrom']);
+        }
+        $params = array(
+            $car->getCarId(),
+            $car->getUserId(),
+            $car->getName(),
+            $car->getBrand(),
+            $car->getFuelType(),
+            $car->getCondition(),
+            $car->getRentFrom()
+        );
+
+        $connector->updateById($carTable, $car->getCarId(), $params);
+        AlertUtil::showSuccessAlert("Sikeres módosítás!");
+        UrlUtil::redirectToUrl(UrlUtil::NAV_MY_CARS);
+    }
+
 }

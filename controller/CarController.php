@@ -31,20 +31,31 @@ class CarController{
     static function initNewCar() {
         if (UserService::isUserLoggedIn()) {
             $view = new NewCarView();
-            $car = null;
-            if (isset($_SESSION['carForm'])) {
-                $car = $_SESSION['carForm'];
-            }
-            $view->loadNewCarPanel($car);
+            //$car = null;
+            //if (isset($_SESSION['carForm'])) {
+            //    $car = $_SESSION['carForm'];
+            //}
+            $view->loadNewCarPanel();
         }
         else {
             UrlUtil::redirectHome();
         }
     }
 
-    static function initCarModify(){
-        if (UserService::isUserLoggedIn()){
-            $x = 0;
+    static function initCarModify($carId){
+        $cars = CarService::findAllCars();
+        $own = false;
+        foreach ($cars as $car){
+            if($car->getCarId() == $carId && $car->getUserId() == UserService::getLoggedInUser()->getId()){
+                $own = true;
+            }
+        }
+        if (UserService::isUserLoggedIn() && $own == true){
+            $view = new CarModifyView();
+            //if (isset($_SESSION['carForm'])) {
+            //    $car = $_SESSION['carForm'];
+            //}
+            $view->loadCarModifyPanel($carId);
         }
         else{
             UrlUtil::redirectHome();
@@ -53,5 +64,9 @@ class CarController{
 
     static function newCar(){
         CarService::addNewCar();
+    }
+
+    static function carModify(){
+        CarService::carModify();
     }
 }

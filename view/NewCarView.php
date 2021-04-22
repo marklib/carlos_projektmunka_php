@@ -9,12 +9,12 @@ class NewCarView extends SiteBuilder {
         parent::__construct('Új autó', 'newCar.css');
     }
 
-    function loadNewCarPanel($car) {
-        if (isset($car)) {
-            $this->car = $car;
-        } else {
-            $this->car = new Car();
-        }
+    function loadNewCarPanel() {
+        //if (isset($car)) {
+        //    $this->car = $car;
+        //} else {
+        //    $this->car = new Car();
+        //}
         $type = UrlUtil::OPERATION_NEW_CAR;
         include 'templates/carPanelTemplate.php';
     }

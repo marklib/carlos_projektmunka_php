@@ -24,25 +24,36 @@
 }
 .edit, .delete{
     box-sizing: border-box;
-    border: 3px solid white;
+    border: none;
     position: absolute;
     width: 85px;
     height: 40px;
     bottom: 0;
     text-align: center;
+    padding: 10px 0;
     z-index: 1;
 }
 .edit a, .delete a{
-    color: #f2f8fa;
     text-decoration: none;
     font-size: 12px;
-    line-height: 34px;
+    color: #f2f8fa;
 }
-.edit{
-    background-color: green;
+.edit {
+    background: #235094;
     right: 85px;
 }
-.delete{
-    background-color: red;
+
+.edit:hover {
+    background: #2f6cc9;
+}
+
+.delete {
+    background: #ba1e1e;
     right: 0;
 }
+
+.delete:hover {
+    background: #d64242;
+}
+
+

@@ -4,6 +4,8 @@ require_once 'util/DBConnector.php';
 require_once 'model/Car.php';
 require_once 'model/User.php';
 require_once 'service/UserService.php';
+require_once 'util/UrlUtil.php';
+require_once 'util/AlertUtil.php';
 
 class MyCarsView extends SiteBuilder{
     public function __construct()

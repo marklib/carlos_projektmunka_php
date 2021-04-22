@@ -12,7 +12,7 @@ class CarModifyView extends SiteBuilder
         parent::__construct('Autó módosítása', 'newCar.css');
     }
 
-    function loadNewCarPanel($car)
+    function loadCarModifyPanel($car)
     {
         if (isset($car)) {
             $this->car = $car;
