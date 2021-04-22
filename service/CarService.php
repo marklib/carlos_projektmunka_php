@@ -5,6 +5,7 @@ require_once 'model/User.php';
 require_once 'util/DBConnector.php';
 require_once 'util/AlertUtil.php';
 require_once 'service/UserService.php';
+require_once 'service/CarService.php';
 
 class CarService{
 
@@ -41,7 +42,7 @@ class CarService{
         $connector->updateById($carTable, $car->getId(), $params);
     }
 
-    private static function findAllCars() {
+    static function findAllCars() {
         $connector = new DBConnector();
         $carTable = "cars";
         $cars = array();
@@ -117,5 +118,9 @@ class CarService{
             $_SESSION['carForm'] = $car;
             UrlUtil::redirectToUrl(UrlUtil::NAV_REGISTRATION);
         }
+    }
+
+    static function findPhoneNumber($car){
+        return UserService::findUserById($car->getUserId())->getPhoneNumber();
     }
 }

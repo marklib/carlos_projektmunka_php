@@ -11,36 +11,13 @@
 } .cars img{
     height: 250px;
     width: 250px;
+    border-radius: 5px;
 }
 .cars .card{
     display: flex;
     box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.69);
     border-radius: 5px;
     background-color: #2068a8;
-}
-.one{
-    grid-column: 1/2;
-    grid-row: 1/2;
-}
-.two{
-    grid-column: 2/3;
-    grid-row: 1/2;
-}
-.three{
-    grid-column: 1/2;
-    grid-row: 2/3;
-}
-.four{
-    grid-column: 2/3;
-    grid-row: 2/3;
-}
-.five{
-    grid-column: 1/2;
-    grid-row: 3/4;
-}
-.six{
-    grid-column: 2/3;
-    grid-row: 3/4;
 }
 .cars .info{
     margin: auto 20px;

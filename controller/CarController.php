@@ -2,6 +2,7 @@
 require_once 'view/CarListView.php';
 require_once 'view/NewCarView.php';
 require_once 'view/CarModifyView.php';
+require_once 'view/MyCarsView.php';
 require_once 'service/UserService.php';
 require_once 'service/CarService.php';
 
@@ -9,10 +10,10 @@ class CarController{
     static function initCarList(){
         $view = new CarListView();
         if(UserService::isUserLoggedIn()){
-            $view->loadCarList(true);
+            $view->loadCarList('yes');
         }
         else{
-            $view->loadCarList(false);
+            $view->loadCarList('no');
         }
     }
 
