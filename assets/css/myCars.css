@@ -1,3 +1,6 @@
+@import "base.css";
+@import "carList.css";
+
 .newCar-sidebar{
     height: 60px;
     width: 140px;

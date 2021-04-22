@@ -1,5 +1,6 @@
 <?php
 require_once 'controller/UserController.php';
+require_once 'controller/CarController.php';
 require_once 'util/UrlUtil.php';
 
 class Router
@@ -31,11 +32,23 @@ class Router
                 case UrlUtil::NAV_FORGOTTEN_PASSWORD:
                     UserController::initForgottenPassword();
                     break;
+                case UrlUtil::NAV_CAR_LIST:
+                    CarController::initCarList();
+                    break;
+                case UrlUtil::NAV_MY_CARS:
+                    CarController::initMyCars();
+                    break;
+                case UrlUtil::NAV_NEW_CAR:
+                    CarController::initNewCar();
+                    break;
+                case UrlUtil::NAV_CAR_MODIFY:
+                    CarController::initCarModify();
+                    break;
                 default:
                     print('404');
             }
         } else {
-            echo 'Autó listácska';
+            CarController::initCarList();
             return;
         }
     }
@@ -56,6 +69,11 @@ class Router
                     break;
                 case UrlUtil::OPERATION_FORGOTTEN_PASSWORD:
                     UserController::sendForgottenPasswordEmail();
+                    break;
+                case UrlUtil::OPERATION_NEW_CAR:
+                    CarController::newCar();
+                    break;
+                case UrlUtil::OPERATION_CAR_MODIFY:
                     break;
             }
         }

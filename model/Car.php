@@ -1,0 +1,90 @@
+<?php
+
+class Car{
+    private $carId;
+    private $userId;
+    private $name;
+    private $brand;
+    private $fuelType;
+    private $condition;
+    private $rentFrom;
+    //private $picture;
+
+    public function getCarId()
+    {
+        return $this->carId;
+    }
+
+    public function setCarId($carId)
+    {
+        $this->carId = $carId;
+    }
+
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    public function getBrand()
+    {
+        return $this->brand;
+    }
+
+    public function setBrand($brand)
+    {
+        $this->brand = $brand;
+    }
+
+    public function getFuelType()
+    {
+        return $this->fuelType;
+    }
+
+    public function setFuelType($fuelType)
+    {
+        $this->fuelType = $fuelType;
+    }
+
+    public function getCondition()
+    {
+        return $this->condition;
+    }
+
+    public function setCondition($condition)
+    {
+        $this->condition = $condition;
+    }
+
+    public function getRentFrom()
+    {
+        return $this->rentFrom;
+    }
+
+    public function setRentFrom($rentFrom)
+    {
+        $this->rentFrom = $rentFrom;
+    }
+
+    /*public function getPicture(){
+        return $this->picture;
+    }
+
+    public function setPicture($picture){
+        $this->picture = $picture;
+    }*/
+}

@@ -26,10 +26,16 @@ class SiteBuilder
                 <img src="assets/img/logo.png" alt="logo" id="logo">
                 <nav>
                     <ul>';
+        $this->buildMenuButton(UrlUtil::NAV_CAR_LIST, 'Autólista');
+        $this->buildMenuButton(UrlUtil::NAV_MY_CARS, 'Saját autók');
+        $this->buildMenuButton(UrlUtil::NAV_NEW_CAR, 'Új autó');
         $this->buildMenuButton(UrlUtil::NAV_USER_SETTINGS, 'Beállítások');
         $this->buildMenuButton(UrlUtil::NAV_LOGOUT, 'Kijelentkezés');
         echo '</ul>
                 </nav>
+                <div id="help">
+                    <a href="http://joo-automento.hu/" target="_blank">Autómentő</a>
+                </div>
             </header>';
     }
 
@@ -38,10 +44,14 @@ class SiteBuilder
                 <img src="assets/img/logo.png" alt="logo" id="logo">
                 <nav>
                     <ul>';
+                    $this->buildMenuButton(UrlUtil::NAV_CAR_LIST, 'Autólista');
                     $this->buildMenuButton(UrlUtil::NAV_LOGIN, 'Bejelentkezés');
                     $this->buildMenuButton(UrlUtil::NAV_REGISTRATION, 'Regisztráció');
         echo '</ul>
                 </nav>
+                <div id="help">
+                    <a href="http://joo-automento.hu/" target="_blank">Autómentő</a>
+                </div>
             </header>';
     }
 

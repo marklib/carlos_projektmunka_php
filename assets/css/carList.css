@@ -1,3 +1,5 @@
+@import "base.css";
+
 .cars{
     display: grid;
     grid-template-columns: 420px 420px;
