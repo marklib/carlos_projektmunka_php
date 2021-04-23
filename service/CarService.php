@@ -10,7 +10,7 @@ require_once 'service/CarService.php';
 class CarService{
 
     private static function saveNewCar($car) {
-        $carTable = "cars";
+        $carTable = 'cars';
         $connector = new DBConnector();
 
         $params = array(
@@ -27,7 +27,7 @@ class CarService{
 
     static function findAllCars() {
         $connector = new DBConnector();
-        $carTable = "cars";
+        $carTable = 'cars';
         $cars = array();
 
         $carRecords = $connector->getRecordsTable($carTable);
@@ -74,7 +74,7 @@ class CarService{
     }
 
     static function addNewCar(){
-        $carTable = "cars";
+        $carTable = 'cars';
         $connector = new DBConnector();
 
         $car = new Car();
@@ -108,7 +108,7 @@ class CarService{
     }
 
     static function carModify(){
-        $carTable = "cars";
+        $carTable = 'cars';
         $connector = new DBConnector();
         $cars = self::findAllCars();
         $car = new Car();
@@ -146,6 +146,15 @@ class CarService{
 
         $connector->updateById($carTable, $car->getCarId(), $params);
         AlertUtil::showSuccessAlert("Sikeres módosítás!");
+        UrlUtil::redirectToUrl(UrlUtil::NAV_MY_CARS);
+    }
+
+    static function carDelete(){
+        $carTable = 'cars';
+        $carId = $_POST['carId'];
+        $connector = new DBConnector();
+        $connector->deleteRecordById($carTable, $carId);
+        AlertUtil::showSuccessAlert("Sikeres törlés!");
         UrlUtil::redirectToUrl(UrlUtil::NAV_MY_CARS);
     }
 

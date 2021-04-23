@@ -6,7 +6,7 @@
             $col = 1;
             //col: 1/2 2/3
             //row: n/n+1
-            if($type == 'myCars'){
+            if($type == 'myCars' || $type == 'deleteCar'){
                 $phone = UserService::getLoggedInUser()->getPhoneNumber();
                 $id = UserService::getLoggedInUser()->getId();
 
@@ -22,12 +22,13 @@
                         <ul>
                             <li class="type"><b>'.$car->getBrand().' '.$car->getName().'</b><hr></li>
                             <li><span>Üzemanyag:</span>'.$car->getFuelType().'</li>
-                            <li><span>Állapot:</span>'.$car->getCondition().'<br></li>
+                            <li><span>Állapot:</span>'.$car->getCondition().'</li>
                             <li><span>Telefon:</span><br><i>'.$phone.'</i></li>
+                            <li><span>Elérhető ekkortól:</span><br>'.$car->getRentFrom().'</li>
                         </ul>
                 </div>
                 <div class="edit"><a href="'.UrlUtil::getRoutedUrl(UrlUtil::NAV_CAR_MODIFY).'&carId='.$car->getCarId().'">Módosítás</a></div>
-                <div class="delete"><a href="#">Töröl</a></div>
+                <div class="delete"><a href="'.UrlUtil::getRoutedUrl(UrlUtil::NAV_CAR_DELETE).'&carId='.$car->getCarId().'">Töröl</a></div>
                 </div>';
                         if($col == 1) {
                             $col=2;
@@ -38,6 +39,25 @@
                         }
                     }
                 }
+
+                if($type == 'deleteCar'){
+                    echo '<div class="overlay">
+                            <div class="popup">
+                                <p>Biztosan törli az autót?</p>
+                                <div class="buttons">
+                                <a href="'.UrlUtil::getRoutedUrl(UrlUtil::NAV_MY_CARS).'">
+                                    <button class="cancel" type="submit">Mégse</button>
+                                </a>
+                                <form method="post" action="'.UrlUtil::MAIN_URL.'">
+                                <input type="hidden" name="carId" value="'.$carId.'">
+                                <input type="hidden" name="operation" value="' . UrlUtil::OPERATION_CAR_DELETE . '"/>
+                                <button class="confirm" type="submit">Törlés</button>
+                                </form>
+                                
+                                </div>
+                            </div>
+                        </div>';
+                }
             }
             else{
                 foreach ($cars as $car){
@@ -47,8 +67,9 @@
                         <ul>
                             <li class="type"><b>'.$car->getBrand().' '.$car->getName().'</b><hr></li>
                             <li><span>Üzemanyag:</span>'.$car->getFuelType().'</li>
-                            <li><span>Állapot:</span>'.$car->getCondition().'<br></li>
+                            <li><span>Állapot:</span>'.$car->getCondition().'</li>
                             <li><span>Telefon:</span><br><i>'.($type=='no'?'---------':CarService::findPhoneNumber($car)).'</i></li>
+                            <li><span>Elérhető ekkortól:</span><br>'.$car->getRentFrom().'</li>
                         </ul>
                 </div>
                 </div>';

@@ -11,6 +11,7 @@ class UrlUtil
     const OPERATION_FORGOTTEN_PASSWORD = 'forgottenPassword';
     const OPERATION_NEW_CAR = 'newCar';
     const OPERATION_CAR_MODIFY = 'carModify';
+    const OPERATION_CAR_DELETE = 'carDelete';
 
     #GET navigations
     const NAV_LOGIN = 'login';
@@ -22,6 +23,7 @@ class UrlUtil
     const NAV_MY_CARS = 'myCars';
     const NAV_NEW_CAR = 'newCar';
     const NAV_CAR_MODIFY = 'carModify';
+    const NAV_CAR_DELETE = 'carDelete';
 
     static function getRoutedUrl($param) {
         return self::MAIN_URL . '?nav=' . $param;

@@ -20,7 +20,7 @@
     background-color: #2068a8;
 }
 .cars .info{
-    margin: auto 20px;
+    margin: 5px 20px;
     text-align: left;
     color: #f2f8fa;
     font-size: 15px;
@@ -39,6 +39,9 @@
     margin-right: 7px;
 }
 .cars ul li:nth-child(4){
+    padding-top: 10px;
+}
+.cars ul li:nth-child(5){
     padding-top: 10px;
 }
 .cars td{

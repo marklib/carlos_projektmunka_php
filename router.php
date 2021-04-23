@@ -44,6 +44,8 @@ class Router
                 case UrlUtil::NAV_CAR_MODIFY:
                     CarController::initCarModify($_GET['carId']);
                     break;
+                case UrlUtil::NAV_CAR_DELETE:
+                    CarController::initCarDelete($_GET['carId']);
                 default:
                     print('404');
             }
@@ -75,6 +77,9 @@ class Router
                     break;
                 case UrlUtil::OPERATION_CAR_MODIFY:
                     CarController::carModify();
+                    break;
+                case UrlUtil::OPERATION_CAR_DELETE:
+                    CarController::carDelete();
                     break;
             }
         }

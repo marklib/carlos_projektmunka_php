@@ -74,4 +74,22 @@ class DBConnector {
         }
         return $records;
     }
+
+    public function deleteRecordById($table, $id){
+        $originalRecords = $this->getRecordsTable($table);
+        $newRecords = array();
+        foreach ($originalRecords as $originalRecord) {
+            if (!($id == $originalRecord[0])) {
+                $newRecords[] = $originalRecord;
+            }
+        }
+
+        foreach ($newRecords as $newRecord) {
+            $this->insert($table . 'temp', $newRecord);
+        }
+        if (file_exists($table . 'temp.txt')) {
+            unlink($table . '.txt');
+            rename($table . 'temp.txt', $table . '.txt');
+        }
+    }
 }

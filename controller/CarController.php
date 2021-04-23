@@ -5,6 +5,7 @@ require_once 'view/CarModifyView.php';
 require_once 'view/MyCarsView.php';
 require_once 'service/UserService.php';
 require_once 'service/CarService.php';
+require_once 'view/CarDeleteView.php';
 
 class CarController{
     static function initCarList(){
@@ -52,10 +53,24 @@ class CarController{
         }
         if (UserService::isUserLoggedIn() && $own == true){
             $view = new CarModifyView();
-            //if (isset($_SESSION['carForm'])) {
-            //    $car = $_SESSION['carForm'];
-            //}
             $view->loadCarModifyPanel($carId);
+        }
+        else{
+            UrlUtil::redirectHome();
+        }
+    }
+
+    static function initCarDelete($carId){
+        $cars = CarService::findAllCars();
+        $own = false;
+        foreach ($cars as $car){
+            if($car->getCarId() == $carId && $car->getUserId() == UserService::getLoggedInUser()->getId()){
+                $own = true;
+            }
+        }
+        if (UserService::isUserLoggedIn() && $own == true){
+            $view = new CarDeleteView();
+            $view->loadCarList('deleteCar',$carId);
         }
         else{
             UrlUtil::redirectHome();
@@ -68,5 +83,9 @@ class CarController{
 
     static function carModify(){
         CarService::carModify();
+    }
+
+    static function carDelete(){
+        CarService::carDelete();
     }
 }
