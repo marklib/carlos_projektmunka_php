@@ -11,17 +11,7 @@ class DBConnector {
     public function insert($table, $params) {
         $myfile = fopen($table . ".txt", "a");
         $dataTxt = serialize($params);
-//        foreach($params as $paramValue) {
-//            $dataTxt .= serialize($paramValue) . ";";
-//        }
-//        if (0 < strlen($dataTxt)) {
-//            if (substr($dataTxt, -1) === ";") {
-//                $dataTxt = substr($dataTxt, 0, -1);
-//            }
-//            if (substr($dataTxt, -1) !== "\n") {
-                $dataTxt .= "\n";
-//            }
-//        }
+        $dataTxt .= "\n";
         fwrite($myfile, $dataTxt);
         fclose($myfile);
     }
@@ -63,12 +53,7 @@ class DBConnector {
         $handle = fopen($table . ".txt", "r");
         if ($handle) {
             while (($line = fgets($handle)) !== false) {
-//                $fields = explode(";", $line);
                 $fields = unserialize($line);
-//                $unserializedFields = array();
-//                foreach ($fields as $field) {
-//                    $unserializedFields[] = unserialize($field);
-//                }
                 $records[] = $fields;
             }
         }

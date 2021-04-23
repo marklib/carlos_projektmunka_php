@@ -25,7 +25,7 @@
         <input required placeholder="Példa János" id="fullNameInput" value="<?php echo $this->user->getFullName();?>" name="fullName" class="inputField" type="text"/><br/>
 
         <label for="phoneNumberInput" class="text">Telefonszám</label>
-        <input required placeholder="+36-70-123-4567" id="phoneNumberInput" value="<?php echo $this->user->getPhoneNumber();?>" name="phoneNumber" class="inputField" type="text"/><br/>
+        <input required placeholder="06701234567" id="phoneNumberInput" value="<?php echo $this->user->getPhoneNumber();?>" name="phoneNumber" class="inputField" type="text"/><br/>
         <br/>
 
         <?php if ($type == 'registration') {

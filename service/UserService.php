@@ -3,7 +3,6 @@ require_once 'util/UrlUtil.php';
 require_once 'model/User.php';
 require_once 'util/DBConnector.php';
 require_once 'util/AlertUtil.php';
-require_once 'util/MailUtil.php';
 
 class UserService
 {
@@ -77,7 +76,8 @@ class UserService
             $user = self::findUserByEmail($email);
             if ($user != null) {
                 $message = "Tisztelt Felhasználó!\n\nA(z) " . $email . " email címhez tartozó jelszó a következő: " . $user->getPassword() . "\n\nÜdvözlettel, A Carlos csapata!";
-                MailUtil::sendEmail($email, 'Elfelejtett jelszó', $message);
+//                MailUtil::sendEmail($email, 'Elfelejtett jelszó', $message);
+//                FIXME Az email küldés funkció csak egy későbbi verzióban lesz bekötve
             }
         }
         AlertUtil::showSuccessAlert("Kiküldtük a jelszó emlékeztetőt! Perceken belül megtekinthetőnek kell lennie, amennyiben tartozik az email címhez felhasználói fiók!");
@@ -130,12 +130,24 @@ class UserService
 
     private static function checkUserForm() {
         $failed = false;
-        if (!isset($_POST['phoneNumber'])) {
+        if (!isset($_POST['phoneNumber']) || empty($_POST['phoneNumber'])) {
             AlertUtil::showFailedAlert("Telefonszám nincs megadva!");
             $failed = true;
         }
-        if (!isset($_POST['fullName'])) {
+        if (!preg_match('/^((?:[03])6)?(?(?=([237]0|1))([237]0|1)(\d{7})|(2[2-9]|3[2-7]|4[024-9]|5[234679]|6[23689]|7[2-9]|8[02-9]|9[92-69])(\d{6}))$/', $_POST['phoneNumber'])) {
+            AlertUtil::showFailedAlert("Hibás telefonszám! Példa jó telefonszámra: 06701234567");
+            $failed = true;
+        }
+        if (!isset($_POST['fullName']) || empty($_POST['fullName'])) {
             AlertUtil::showFailedAlert("Teljes név nincs megadva!");
+            $failed = true;
+        }
+        if (!isset($_POST['passwordAgain']) || empty($_POST['passwordAgain'])) {
+            AlertUtil::showFailedAlert("Csak egyszer került a jelszó megadásra!");
+            $failed = true;
+        }
+        if (!isset($_POST['password']) || empty($_POST['password'])) {
+            AlertUtil::showFailedAlert("Jelszó nincs megadva!");
             $failed = true;
         }
         if ($_POST['password'] !== $_POST['passwordAgain']) {
@@ -154,12 +166,8 @@ class UserService
             AlertUtil::showFailedAlert("A jelszónak legalább 8 karakteresnek kell lennie!");
             $failed = true;
         }
-        if (!isset($_POST['passwordAgain'])) {
-            AlertUtil::showFailedAlert("Csak egyszer került a jelszó megadásra!");
-            $failed = true;
-        }
-        if (!isset($_POST['password'])) {
-            AlertUtil::showFailedAlert("Jelszó nincs megadva!");
+        if (!isset($_POST['email']) || empty($_POST['email'])) {
+            AlertUtil::showFailedAlert("Email cím nincs megadva!");
             $failed = true;
         }
         if (self::findUserByEmail($_POST['email']) != null) {
@@ -168,10 +176,6 @@ class UserService
         }
         if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
             AlertUtil::showFailedAlert("Érvénytelen e-mail cím!");
-            $failed = true;
-        }
-        if (!isset($_POST['email'])) {
-            AlertUtil::showFailedAlert("Email cím nincs megadva!");
             $failed = true;
         }
         return !$failed;
