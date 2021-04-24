@@ -112,11 +112,11 @@ class Car{
         return '';
     }
 
-    /*public function getPicture(){
+    public function getPicture(){
         return $this->picture;
     }
 
     public function setPicture($picture){
         $this->picture = $picture;
-    }*/
+    }
 }

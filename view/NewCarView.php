@@ -10,11 +10,6 @@ class NewCarView extends SiteBuilder {
     }
 
     function loadNewCarPanel() {
-        //if (isset($car)) {
-        //    $this->car = $car;
-        //} else {
-        //    $this->car = new Car();
-        //}
         $type = UrlUtil::OPERATION_NEW_CAR;
         include 'templates/carPanelTemplate.php';
     }

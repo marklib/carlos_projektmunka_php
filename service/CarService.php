@@ -6,6 +6,7 @@ require_once 'util/DBConnector.php';
 require_once 'util/AlertUtil.php';
 require_once 'service/UserService.php';
 require_once 'service/CarService.php';
+require_once 'util/FileUtil.php';
 
 class CarService{
 
@@ -20,7 +21,8 @@ class CarService{
             $car->getBrand(),
             $car->getFuelType(),
             $car->getCondition(),
-            $car->getRentFrom()
+            $car->getRentFrom(),
+            $car->getPicture()
         );
         $connector->insert($carTable, $params);
     }
@@ -60,6 +62,7 @@ class CarService{
         $car->setFuelType($record[4]);
         $car->setCondition($record[5]);
         $car->setRentFrom($record[6]);
+        $car->setPicture($record[7]);
         return $car;
     }
 
@@ -79,41 +82,68 @@ class CarService{
         }
         if (!isset($_POST['condition'])){
             AlertUtil::showFailedAlert("Az autó állapota nincs megadva!");
+            $failed = true;
         }
         if (!isset($_POST['rentFrom'])){
             AlertUtil::showFailedAlert("Nincs megadva, mikortól bérelhető az autó!");
+            $failed = true;
+        }
+        if(!empty($_FILES['carPicture']['name'])){
+            if(!FileUtil::checkIfImage($_FILES['carPicture'])){
+                AlertUtil::showFailedAlert('A fájl hibás!');
+                $failed = true;
+            }
+            if(!FileUtil::checkSize($_FILES['carPicture'])){
+                AlertUtil::showFailedAlert('A kép túl nagy!');
+                $failed = true;
+            }
+        }
+        else{
+            AlertUtil::showFailedAlert('A kép hiányzik!');
+            $failed = true;
         }
         return !$failed;
     }
 
     static function addNewCar(){
-        $carTable = 'cars';
-        $connector = new DBConnector();
+        $uploadedPicture = false;
+        if(!empty($_FILES['carPicture']['name'])){
+            $uploadedPicture = FileUtil::upload($_FILES['carPicture']);
+        }
+        if($uploadedPicture !== false){
+            $carTable = 'cars';
+            $connector = new DBConnector();
+            $car = new Car();
+            $car->setName($_POST['name']);
+            $car->setBrand($_POST['brand']);
+            $car->setFuelType($_POST['fuelType']);
+            $car->setCondition($_POST['condition']);
+            $car->setRentFrom($_POST['rentFrom']);
+            $car->setPicture($uploadedPicture);
 
-        $car = new Car();
-        $car->setName($_POST['name']);
-        $car->setBrand($_POST['brand']);
-        $car->setFuelType($_POST['fuelType']);
-        $car->setCondition($_POST['condition']);
-        $car->setRentFrom($_POST['rentFrom']);
-        /*if(isset($_POST['carPicture'])){
-            $car->setPicture($_POST['carPicture']);
+
+            if(self::checkCarForm()){
+
+                $car->setCarId($connector->getLastId($carTable) + 1);
+                $car->setUserId(UserService::getLoggedInUser()->getId());
+                self::saveNewCar($car);
+
+                unset($_SESSION['carForm']);
+                unset($_FILES['carPicture']);
+                AlertUtil::showSuccessAlert("Sikeres hozzáadás!");
+                UrlUtil::redirectToUrl(UrlUtil::NAV_CAR_LIST);
+                }
+            else {
+                $_SESSION['carForm'] = $car;
+                UrlUtil::redirectToUrl(UrlUtil::NAV_REGISTRATION);
+            }
         }
         else{
-            $car->setPicture("noPhoto.jpg");
-        }*/
-        if (self::checkCarForm()) {
-            $car->setCarId($connector->getLastId($carTable) + 1);
-            $car->setUserId(UserService::getLoggedInUser()->getId());
-            self::saveNewCar($car);
-
-            $_SESSION['carForm'] = null;
-            AlertUtil::showSuccessAlert("Sikeres hozzáadás!");
-            UrlUtil::redirectToUrl(UrlUtil::NAV_CAR_LIST);
-        } else {
-            $_SESSION['carForm'] = $car;
-            UrlUtil::redirectToUrl(UrlUtil::NAV_REGISTRATION);
+            unset($_FILES['carPicture']);
+            UrlUtil::redirectToUrl(UrlUtil::NAV_NEW_CAR);
+            AlertUtil::showFailedAlert('A képfeltöltés sikertelen!');
         }
+
     }
 
     static function findPhoneNumber($car){
@@ -123,19 +153,14 @@ class CarService{
     static function carModify(){
         $carTable = 'cars';
         $connector = new DBConnector();
-        $cars = self::findAllCars();
         $car = new Car();
 
-        foreach ($cars as $car){
-            if($car->getCarId() == $_POST['carId']){
-                $oldCar = $car;
-                break;
-            }
-        }
-        if(isset($_POST['name']) && $_POST['name'] != ''){
+        $car->setCarId($_SESSION['carForm']->getCarId());
+        $car = self::findCarById($car->getCarId());
+        if(isset($_POST['name']) && !empty($_POST['name'])){
             $car->setName($_POST['name']);
         }
-        if(isset($_POST['brand']) && $_POST['brand'] != ''){
+        if(isset($_POST['brand']) && !empty($_POST['brand'])){
             $car->setBrand($_POST['brand']);
         }
         if(isset($_POST['fuelType'])){
@@ -147,6 +172,17 @@ class CarService{
         if(isset($_POST['rentFrom'])){
             $car->setRentFrom($_POST['rentFrom']);
         }
+        if(isset($_FILES['carPicture']) && !empty($_FILES['carPicture']['name'])){
+            $picture = FileUtil::upload($_FILES['carPicture']);
+            if($picture !== false){
+                $car->setPicture($picture);
+            }
+            else{
+                AlertUtil::showFailedAlert('A képfeltöltés sikertelen!');
+                $_SESSION['carForm'] = $car;
+                UrlUtil::redirectToUrl(UrlUtil::NAV_MY_CARS . '&carId=' . $car->getCarId());
+            }
+        }
         $params = array(
             $car->getCarId(),
             $car->getUserId(),
@@ -154,12 +190,14 @@ class CarService{
             $car->getBrand(),
             $car->getFuelType(),
             $car->getCondition(),
-            $car->getRentFrom()
+            $car->getRentFrom(),
+            $car->getPicture()
         );
 
         $connector->updateById($carTable, $car->getCarId(), $params);
         AlertUtil::showSuccessAlert("Sikeres módosítás!");
-        $_SESSION['car'] = null;
+        unset($_SESSION['carForm']);
+        unset($_FILES['carPicture']);
         UrlUtil::redirectToUrl(UrlUtil::NAV_MY_CARS);
     }
 

@@ -32,10 +32,6 @@ class CarController{
     static function initNewCar() {
         if (UserService::isUserLoggedIn()) {
             $view = new NewCarView();
-            //$car = null;
-            //if (isset($_SESSION['carForm'])) {
-            //    $car = $_SESSION['carForm'];
-            //}
             $view->loadNewCarPanel();
         }
         else {
