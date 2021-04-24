@@ -80,6 +80,38 @@ class Car{
         $this->rentFrom = $rentFrom;
     }
 
+    public function getFuelTypeHun(){
+        switch ($this->fuelType){
+            case 'petrol':
+                return 'benzin';
+
+            case 'diesel':
+                return 'dízel';
+
+            case 'electric':
+                return 'elektromos';
+
+            case 'other':
+                return 'egyéb';
+        }
+        return '';
+    }
+
+    public function getConditionHun(){
+        switch ($this->condition){
+            case 'perfect':
+                return 'tökéletes';
+
+            case 'normal':
+                return 'normál';
+
+            case 'bad':
+                return 'rossz';
+
+        }
+        return '';
+    }
+
     /*public function getPicture(){
         return $this->picture;
     }

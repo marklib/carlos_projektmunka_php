@@ -21,8 +21,8 @@
                     <div class="info">
                         <ul>
                             <li class="type"><b>'.$car->getBrand().' '.$car->getName().'</b><hr></li>
-                            <li><span>Üzemanyag:</span>'.$car->getFuelType().'</li>
-                            <li><span>Állapot:</span>'.$car->getCondition().'</li>
+                            <li><span>Üzemanyag:</span>'.$car->getFuelTypeHun().'</li>
+                            <li><span>Állapot:</span>'.$car->getConditionHun().'</li>
                             <li><span>Telefon:</span><br><i>'.$phone.'</i></li>
                             <li><span>Elérhető ekkortól:</span><br>'.$car->getRentFrom().'</li>
                         </ul>
@@ -66,8 +66,8 @@
                     <div class="info">
                         <ul>
                             <li class="type"><b>'.$car->getBrand().' '.$car->getName().'</b><hr></li>
-                            <li><span>Üzemanyag:</span>'.$car->getFuelType().'</li>
-                            <li><span>Állapot:</span>'.$car->getCondition().'</li>
+                            <li><span>Üzemanyag:</span>'.$car->getFuelTypeHun().'</li>
+                            <li><span>Állapot:</span>'.$car->getConditionHun().'</li>
                             <li><span>Telefon:</span><br><i>'.($type=='no'?'---------':CarService::findPhoneNumber($car)).'</i></li>
                             <li><span>Elérhető ekkortól:</span><br>'.$car->getRentFrom().'</li>
                         </ul>

@@ -38,6 +38,19 @@ class CarService{
         return $cars;
     }
 
+    static function findCarById($carId){
+        $connector = new DBConnector();
+        $carTable = 'cars';
+
+        $carRecords = $connector->getRecordsTable($carTable);
+        foreach ($carRecords as $record){
+            if($record[0] == $carId){
+                return self::createCarByRecord($record);
+            }
+        }
+        return null;
+    }
+
     private static function createCarByRecord($record) {
         $car = new Car();
         $car->setCarId($record[0]);
@@ -146,6 +159,7 @@ class CarService{
 
         $connector->updateById($carTable, $car->getCarId(), $params);
         AlertUtil::showSuccessAlert("Sikeres módosítás!");
+        $_SESSION['car'] = null;
         UrlUtil::redirectToUrl(UrlUtil::NAV_MY_CARS);
     }
 

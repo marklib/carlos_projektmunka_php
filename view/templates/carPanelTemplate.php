@@ -7,35 +7,36 @@
             echo '<h2 class="mainTitle text">Autó módosítása</h2>
                 <input type="hidden" name="operation" value="' . UrlUtil::OPERATION_CAR_MODIFY . '"/>
                 <input type="hidden" name="carId" value="'.$_GET['carId'].'">';
+                $_SESSION['car'] = CarService::findCarById($_GET['carId']);
         }?>
         <h3 class="mainTitle text">Autó adatok</h3>
 
-        <label for="nameInput" class="text">Autó megnevezése</label>
-        <input <?php if($type == UrlUtil::OPERATION_NEW_CAR) { echo 'required';} ?> id="nameInput" name="name" class="inputField" type="text"/>
+        <label for="nameInput" class="text">Autó típusa</label>
+        <input <?php if($type == UrlUtil::OPERATION_NEW_CAR) { echo 'required';} else{ echo 'value="'.$_SESSION['car']->getName().'"';}?> id="nameInput" name="name" class="inputField" type="text"/>
         </br></br>
         <label for="brandInput" class="text">Márka</label>
-        <input <?php if($type == UrlUtil::OPERATION_NEW_CAR) { echo 'required';} ?> id="brandInput" name="brand" class="inputField" type="text"/>
+        <input <?php if($type == UrlUtil::OPERATION_NEW_CAR) { echo 'required';}  else{ echo 'value="'.$_SESSION['car']->getBrand().'"';}?> id="brandInput" name="brand" class="inputField" type="text"/>
         </br></br>
         <label for="fuelTypeSelect" class="text">Üzemanyag</label>
         <select id="fuelTypeSelect" class="inputField" name="fuelType">
-            <option value="petrol">Benzin</option>
-            <option value="diesel">Dízel</option>
-            <option value="electric">Elektromos</option>
-            <option value="other">Egyéb</option>
+            <option <?php if(isset($_SESSION['car']) && $_SESSION['car']->getFuelType() == 'petrol'){echo 'selected';}?> value="petrol">Benzin</option>
+            <option <?php if(isset($_SESSION['car']) && $_SESSION['car']->getFuelType() == 'diesel'){echo 'selected';}?> value="diesel">Dízel</option>
+            <option <?php if(isset($_SESSION['car']) && $_SESSION['car']->getFuelType() == 'electric'){echo 'selected';}?> value="electric">Elektromos</option>
+            <option <?php if(isset($_SESSION['car']) && $_SESSION['car']->getFuelType() == 'other'){echo 'selected';}?> value="other">Egyéb</option>
         </select>
         </br></br>
         <label class="text">Állapot</label></br>
-        <input <?php if($type == UrlUtil::OPERATION_NEW_CAR) { echo 'required';} ?> type="radio" id="perfectConditionCheckbox" name="condition" class="" value="perfect">
+        <input <?php if($type == UrlUtil::OPERATION_NEW_CAR) { echo 'required';} else{if($_SESSION['car']->getCondition() == 'perfect'){echo 'checked';}}?> type="radio" id="perfectConditionCheckbox" name="condition" class="" value="perfect">
         <label for="perfectConditionCheckbox">Tökéletes</label></br>
-        <input <?php if($type == UrlUtil::OPERATION_NEW_CAR) { echo 'required';} ?> type="radio" id="normalConditionCheckbox" name="condition" value="normal">
+        <input <?php if($type == UrlUtil::OPERATION_NEW_CAR) { echo 'required';} else{if($_SESSION['car']->getCondition() == 'normal'){echo 'checked';}}?> type="radio" id="normalConditionCheckbox" name="condition" value="normal">
         <label for="normalConditionCheckbox">Normál</label><br>
-        <input <?php if($type == UrlUtil::OPERATION_NEW_CAR) { echo 'required';} ?> type="radio" id="badConditionCheckbox" name="condition" value="bad">
+        <input <?php if($type == UrlUtil::OPERATION_NEW_CAR) { echo 'required';} else{if($_SESSION['car']->getCondition() == 'bad'){echo 'checked';}}?> type="radio" id="badConditionCheckbox" name="condition" value="bad">
         <label for="badConditionCheckbox">Rossz</label><br>
 
         <h3 class="mainTitle text">Bérlési adatok</h3>
 
         <label for="rentFrom" class="text">Mikortól bérelhető?</label>
-        <input <?php if($type == UrlUtil::OPERATION_NEW_CAR) { echo 'required';} ?> type="date" id="rentFrom" name="rentFrom" class="inputField" min="2021-03-08">
+        <input <?php if($type == UrlUtil::OPERATION_NEW_CAR) { echo 'required';} else{echo 'value="'.$_SESSION['car']->getRentFrom().'"';}?> type="date" id="rentFrom" name="rentFrom" class="inputField" min="2021-03-08">
 
         <!--<h3 class="mainTitle text">Képek</h3>
         <input type="file" id="carPicture" name="carPicture" accept="image/png, image/jpeg">

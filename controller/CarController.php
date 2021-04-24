@@ -24,7 +24,7 @@ class CarController{
             $view->loadCarList('myCars');
         }
         else {
-            UrlUtil::redirectHome();
+            UrlUtil::redirectToUrl(UrlUtil::NAV_LOGIN);
         }
     }
 
@@ -39,7 +39,7 @@ class CarController{
             $view->loadNewCarPanel();
         }
         else {
-            UrlUtil::redirectHome();
+            UrlUtil::redirectToUrl(UrlUtil::NAV_LOGIN);
         }
     }
 
@@ -56,7 +56,7 @@ class CarController{
             $view->loadCarModifyPanel($carId);
         }
         else{
-            UrlUtil::redirectHome();
+            UrlUtil::redirectToUrl(UrlUtil::NAV_LOGIN);
         }
     }
 
@@ -73,7 +73,7 @@ class CarController{
             $view->loadCarList('deleteCar',$carId);
         }
         else{
-            UrlUtil::redirectHome();
+            UrlUtil::redirectToUrl(UrlUtil::NAV_LOGIN);
         }
     }
 
