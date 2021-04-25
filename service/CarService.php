@@ -89,10 +89,6 @@ class CarService{
             $failed = true;
         }
         if(!empty($_FILES['carPicture']['name'])){
-            if(!FileUtil::checkIfImage($_FILES['carPicture'])){
-                AlertUtil::showFailedAlert('A fájl hibás!');
-                $failed = true;
-            }
             if(!FileUtil::checkSize($_FILES['carPicture'])){
                 AlertUtil::showFailedAlert('A kép túl nagy!');
                 $failed = true;
@@ -128,14 +124,12 @@ class CarService{
                 $car->setUserId(UserService::getLoggedInUser()->getId());
                 self::saveNewCar($car);
 
-                unset($_SESSION['carForm']);
                 unset($_FILES['carPicture']);
                 AlertUtil::showSuccessAlert("Sikeres hozzáadás!");
                 UrlUtil::redirectToUrl(UrlUtil::NAV_CAR_LIST);
                 }
             else {
-                $_SESSION['carForm'] = $car;
-                UrlUtil::redirectToUrl(UrlUtil::NAV_REGISTRATION);
+                UrlUtil::redirectToUrl(UrlUtil::NAV_NEW_CAR);
             }
         }
         else{

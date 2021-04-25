@@ -1,5 +1,5 @@
 <div id="newCarPanel" class="centerPanel">
-    <form method="post" action="<?php echo UrlUtil::MAIN_URL; ?>"  ENCTYPE="multipart/form-data">
+    <form method="post" action="<?php echo UrlUtil::MAIN_URL; ?>" enctype="multipart/form-data">
         <?php if ($type == UrlUtil::OPERATION_NEW_CAR) {
             echo '<h2 class="mainTitle text">Új autó</h2>
                 <input type="hidden" name="operation" value="' . UrlUtil::OPERATION_NEW_CAR . '"/>';

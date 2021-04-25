@@ -1,4 +1,5 @@
 a:8:{i:0;i:1;i:1;i:2;i:2;s:11:"Hungaro 500";i:3;s:7:"Ferrari";i:4;s:6:"diesel";i:5;s:3:"bad";i:6;s:10:"2021-04-07";i:7;s:21:"carPictures/ope1l.jpg";}
 a:8:{i:0;i:2;i:1;i:2;i:2;s:5:"Wroom";i:3;s:7:"Trabant";i:4;s:6:"petrol";i:5;s:7:"perfect";i:6;s:10:"2021-04-08";i:7;s:21:"carPictures/mazda.jpg";}
-a:8:{i:0;i:3;i:1;i:1;i:2;s:9:"Legato 10";i:3;N;i:4;s:6:"petrol";i:5;s:7:"perfect";i:6;s:10:"2021-04-07";i:7;s:19:"carPictures/car.jpg";}
+a:8:{i:0;i:3;i:1;i:1;i:2;s:9:"Legato 10";i:3;s:5:"Mazda";i:4;s:6:"petrol";i:5;s:7:"perfect";i:6;s:10:"2021-04-07";i:7;s:19:"carPictures/car.jpg";}
 a:8:{i:0;i:4;i:1;i:1;i:2;s:10:"Lorenzo II";i:3;s:7:"Ferrari";i:4;s:6:"petrol";i:5;s:6:"normal";i:6;s:10:"2021-03-31";i:7;s:13:"carPictures/1";}
+a:8:{i:0;i:5;i:1;i:1;i:2;s:11:"Hungaro 500";i:3;s:6:"Toyota";i:4;s:6:"diesel";i:5;s:6:"normal";i:6;s:10:"2021-04-06";i:7;s:17:"carPictures/0.jpg";}
