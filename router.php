@@ -50,7 +50,7 @@ class Router
                     print('404');
             }
         } else {
-            CarController::initCarList();
+            UrlUtil::redirectToUrl(UrlUtil::NAV_CAR_LIST);
             return;
         }
     }

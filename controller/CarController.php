@@ -40,16 +40,21 @@ class CarController{
     }
 
     static function initCarModify($carId){
-        $cars = CarService::findAllCars();
-        $own = false;
-        foreach ($cars as $car){
-            if($car->getCarId() == $carId && $car->getUserId() == UserService::getLoggedInUser()->getId()){
-                $own = true;
+        if(UserService::isUserLoggedIn()){
+            $cars = CarService::findAllCars();
+            $own = false;
+            foreach ($cars as $car){
+                if($car->getCarId() == $carId && $car->getUserId() == UserService::getLoggedInUser()->getId()){
+                    $own = true;
+                }
             }
-        }
-        if (UserService::isUserLoggedIn() && $own == true){
-            $view = new CarModifyView();
-            $view->loadCarModifyPanel($carId);
+            if ($own == true){
+                $view = new CarModifyView();
+                $view->loadCarModifyPanel($carId);
+            }
+            else{
+                UrlUtil::redirectToUrl(UrlUtil::NAV_MY_CARS);
+            }
         }
         else{
             UrlUtil::redirectToUrl(UrlUtil::NAV_LOGIN);
@@ -57,16 +62,21 @@ class CarController{
     }
 
     static function initCarDelete($carId){
-        $cars = CarService::findAllCars();
-        $own = false;
-        foreach ($cars as $car){
-            if($car->getCarId() == $carId && $car->getUserId() == UserService::getLoggedInUser()->getId()){
-                $own = true;
+        if(UserService::isUserLoggedIn()){
+            $cars = CarService::findAllCars();
+            $own = false;
+            foreach ($cars as $car){
+                if($car->getCarId() == $carId && $car->getUserId() == UserService::getLoggedInUser()->getId()){
+                    $own = true;
+                }
             }
-        }
-        if (UserService::isUserLoggedIn() && $own == true){
-            $view = new CarDeleteView();
-            $view->loadCarList('deleteCar',$carId);
+            if ($own == true){
+                $view = new CarDeleteView();
+                $view->loadCarList('deleteCar',$carId);
+            }
+            else{
+                UrlUtil::redirectToUrl(UrlUtil::NAV_MY_CARS);
+            }
         }
         else{
             UrlUtil::redirectToUrl(UrlUtil::NAV_LOGIN);
